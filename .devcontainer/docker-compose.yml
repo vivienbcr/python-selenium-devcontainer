@@ -1,0 +1,24 @@
+---
+version: '3'
+services:
+  ps_vscode:
+    build:
+      context: ..
+      dockerfile: "Dockerfile"
+    volumes:
+      # Allow git usage within container
+      - "${HOME}/.ssh:/home/pydev/.ssh:ro"
+      - "${HOME}/.gitconfig:/home/pydev/.gitconfig:ro"
+      - ..:/pyselboilerplate:cached
+      # Persist bash-history
+      - pydev-vscode-server:/home/pydev/.vscode-server
+      - pydev-bashhistory:/home/pydev/commandhistory
+    # Expose API port
+    ports:
+      - "6900:5900"
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+
+volumes:
+  pydev-vscode-server:
+  pydev-bashhistory:
